@@ -89,7 +89,7 @@ describe("HomeComponent", () => {
     expect(tabs.length).toBe(2, "Unexpected number of tabs found");
   });
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked", (done: DoneFn) => {
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
 
     fixture.detectChanges();
@@ -100,12 +100,16 @@ describe("HomeComponent", () => {
 
     fixture.detectChanges();
 
-    const cardTitles = elementToDebug.queryAll(By.css(".mat-card-title"));
+    setTimeout(() => {
+      const cardTitles = elementToDebug.queryAll(By.css(".mat-card-title"));
 
-    expect(cardTitles.length).toBeGreaterThan(0, "Coul not find card titles");
+      expect(cardTitles.length).toBeGreaterThan(0, "Coul not find card titles");
 
-    expect(cardTitles[0].nativeElement.textContent).toContain(
-      "Angular Security Course"
-    );
+      expect(cardTitles[0].nativeElement.textContent).toContain(
+        "Angular Security Course"
+      );
+
+      done(); // this tells jasmine an indication that test complete and all assertions executed
+    }, 500);
   });
 });
